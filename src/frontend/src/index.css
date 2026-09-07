@@ -1,0 +1,383 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("/assets/fonts/Satoshi.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono.woff2") format("woff2");
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --font-display: "Space Grotesk";
+    --font-body: "Satoshi";
+    --font-mono: "JetBrains Mono";
+    --radius: 0.75rem;
+
+    --background: 0.985 0.008 160;
+    --foreground: 0.17 0.025 160;
+    --card: 1.0 0.004 160;
+    --card-foreground: 0.17 0.025 160;
+    --popover: 1.0 0.004 160;
+    --popover-foreground: 0.17 0.025 160;
+
+    --primary: 0.5 0.16 155;
+    --primary-foreground: 0.985 0.008 155;
+
+    --secondary: 0.95 0.014 160;
+    --secondary-foreground: 0.28 0.03 160;
+    --muted: 0.95 0.014 160;
+    --muted-foreground: 0.5 0.02 160;
+
+    --accent: 0.45 0.13 245;
+    --accent-foreground: 0.985 0.008 245;
+
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.985 0.008 25;
+    --success: 0.55 0.16 150;
+    --warning: 0.72 0.15 85;
+
+    --border: 0.9 0.012 160;
+    --input: 0.9 0.012 160;
+    --ring: 0.5 0.16 155;
+
+    --chart-1: 0.5 0.16 155;
+    --chart-2: 0.45 0.13 245;
+    --chart-3: 0.72 0.15 85;
+    --chart-4: 0.55 0.16 320;
+    --chart-5: 0.6 0.12 185;
+
+    --sidebar: 0.98 0.008 160;
+    --sidebar-foreground: 0.17 0.025 160;
+    --sidebar-primary: 0.5 0.16 155;
+    --sidebar-primary-foreground: 0.985 0.008 155;
+    --sidebar-accent: 0.95 0.014 160;
+    --sidebar-accent-foreground: 0.28 0.03 160;
+    --sidebar-border: 0.9 0.012 160;
+    --sidebar-ring: 0.5 0.16 155;
+
+    --nuc-a: 0.55 0.16 155;
+    --nuc-t: 0.72 0.15 85;
+    --nuc-g: 0.45 0.13 245;
+    --nuc-c: 0.55 0.16 320;
+
+    --gauge-weak: 0.55 0.2 25;
+    --gauge-mid: 0.72 0.15 85;
+    --gauge-strong: 0.5 0.16 155;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.5 0.16 155),
+      oklch(0.45 0.13 245)
+    );
+    --gradient-subtle: linear-gradient(
+      180deg,
+      oklch(0.99 0.006 160),
+      oklch(0.965 0.012 160)
+    );
+
+    /* Motion tokens — sequenced data-reveal system */
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --dur-fast: 150ms;
+    --dur-md: 300ms;
+    --dur-slow: 600ms;
+    --dur-enter: 700ms;
+    --stagger-step: 70ms;
+    --glow-ring: 0 0 0 3px oklch(0.5 0.16 155 / 0.18);
+  }
+
+  .dark {
+    --background: 0.145 0.02 160;
+    --foreground: 0.93 0.015 160;
+    --card: 0.18 0.022 160;
+    --card-foreground: 0.93 0.015 160;
+    --popover: 0.2 0.022 160;
+    --popover-foreground: 0.93 0.015 160;
+
+    --primary: 0.72 0.16 155;
+    --primary-foreground: 0.16 0.02 155;
+
+    --secondary: 0.22 0.025 160;
+    --secondary-foreground: 0.85 0.015 160;
+    --muted: 0.22 0.025 160;
+    --muted-foreground: 0.6 0.02 160;
+
+    --accent: 0.68 0.12 245;
+    --accent-foreground: 0.16 0.02 245;
+
+    --destructive: 0.65 0.2 25;
+    --destructive-foreground: 0.93 0.015 25;
+    --success: 0.65 0.16 150;
+    --warning: 0.78 0.14 85;
+
+    --border: 0.28 0.025 160;
+    --input: 0.28 0.025 160;
+    --ring: 0.72 0.16 155;
+
+    --chart-1: 0.72 0.16 155;
+    --chart-2: 0.68 0.12 245;
+    --chart-3: 0.78 0.14 85;
+    --chart-4: 0.7 0.14 320;
+    --chart-5: 0.7 0.12 185;
+
+    --sidebar: 0.16 0.02 160;
+    --sidebar-foreground: 0.93 0.015 160;
+    --sidebar-primary: 0.72 0.16 155;
+    --sidebar-primary-foreground: 0.16 0.02 155;
+    --sidebar-accent: 0.22 0.025 160;
+    --sidebar-accent-foreground: 0.85 0.015 160;
+    --sidebar-border: 0.28 0.025 160;
+    --sidebar-ring: 0.72 0.16 155;
+
+    --nuc-a: 0.72 0.16 155;
+    --nuc-t: 0.78 0.14 85;
+    --nuc-g: 0.68 0.12 245;
+    --nuc-c: 0.7 0.14 320;
+
+    --gauge-weak: 0.65 0.2 25;
+    --gauge-mid: 0.78 0.14 85;
+    --gauge-strong: 0.72 0.16 155;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.72 0.16 155),
+      oklch(0.68 0.12 245)
+    );
+    --gradient-subtle: linear-gradient(
+      180deg,
+      oklch(0.16 0.02 160),
+      oklch(0.13 0.02 160)
+    );
+
+    --glow-ring: 0 0 0 3px oklch(0.72 0.16 155 / 0.22);
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .text-gradient {
+    background-image: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+
+  .bg-gradient-subtle {
+    background-image: var(--gradient-subtle);
+  }
+
+  .text-nuc-a {
+    color: oklch(var(--nuc-a));
+  }
+  .text-nuc-t {
+    color: oklch(var(--nuc-t));
+  }
+  .text-nuc-g {
+    color: oklch(var(--nuc-g));
+  }
+  .text-nuc-c {
+    color: oklch(var(--nuc-c));
+  }
+  .bg-nuc-a {
+    background-color: oklch(var(--nuc-a));
+  }
+  .bg-nuc-t {
+    background-color: oklch(var(--nuc-t));
+  }
+  .bg-nuc-g {
+    background-color: oklch(var(--nuc-g));
+  }
+  .bg-nuc-c {
+    background-color: oklch(var(--nuc-c));
+  }
+
+  .bg-gauge-weak {
+    background-color: oklch(var(--gauge-weak));
+  }
+  .bg-gauge-mid {
+    background-color: oklch(var(--gauge-mid));
+  }
+  .bg-gauge-strong {
+    background-color: oklch(var(--gauge-strong));
+  }
+  .text-gauge-weak {
+    color: oklch(var(--gauge-weak));
+  }
+  .text-gauge-mid {
+    color: oklch(var(--gauge-mid));
+  }
+  .text-gauge-strong {
+    color: oklch(var(--gauge-strong));
+  }
+
+  .bg-sci-grid {
+    background-image: linear-gradient(
+        to right,
+        oklch(var(--border) / 0.4) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        oklch(var(--border) / 0.4) 1px,
+        transparent 1px
+      );
+    background-size: 44px 44px;
+  }
+
+  /* ---- Entrance choreography ---- */
+  .animate-fade-in-up {
+    animation: fade-in-up var(--dur-enter) var(--ease-out-expo) both;
+  }
+  .animate-fade-in {
+    animation: fade-in var(--dur-slow) var(--ease-standard) both;
+  }
+  .animate-scale-in {
+    animation: scale-in var(--dur-slow) var(--ease-out-expo) both;
+  }
+  .animate-slide-in-left {
+    animation: slide-in-left var(--dur-slow) var(--ease-out-expo) both;
+  }
+  .animate-slide-in-right {
+    animation: slide-in-right var(--dur-slow) var(--ease-out-expo) both;
+  }
+
+  /* ---- Staggered delay helpers (0.07s steps) ---- */
+  .stagger-1 {
+    animation-delay: calc(var(--stagger-step) * 1);
+  }
+  .stagger-2 {
+    animation-delay: calc(var(--stagger-step) * 2);
+  }
+  .stagger-3 {
+    animation-delay: calc(var(--stagger-step) * 3);
+  }
+  .stagger-4 {
+    animation-delay: calc(var(--stagger-step) * 4);
+  }
+  .stagger-5 {
+    animation-delay: calc(var(--stagger-step) * 5);
+  }
+  .stagger-6 {
+    animation-delay: calc(var(--stagger-step) * 6);
+  }
+  .stagger-7 {
+    animation-delay: calc(var(--stagger-step) * 7);
+  }
+  .stagger-8 {
+    animation-delay: calc(var(--stagger-step) * 8);
+  }
+
+  /* ---- Micro-interactions ---- */
+  .hover-lift {
+    transition: transform var(--dur-md) var(--ease-out-expo), box-shadow
+      var(--dur-md) var(--ease-standard);
+  }
+  .hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: var(
+      --shadow-elevated,
+      0 2px 4px 0 oklch(0.16 0.03 160 / 0.06),
+      0 12px 28px -6px oklch(0.16 0.03 160 / 0.12)
+    );
+  }
+  .press {
+    transition: transform var(--dur-fast) var(--ease-standard), box-shadow
+      var(--dur-fast) var(--ease-standard);
+  }
+  .press:active {
+    transform: translateY(1px) scale(0.98);
+  }
+  .glow-hover {
+    transition: box-shadow var(--dur-md) var(--ease-standard);
+  }
+  .glow-hover:hover,
+  .glow-hover:focus-visible {
+    box-shadow: var(--glow-ring);
+  }
+
+  /* ---- Data visualization support ---- */
+  .count-up {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+  .chart-draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: chart-draw 1.2s var(--ease-in-out) forwards;
+  }
+  .bar-grow {
+    transform-origin: bottom;
+    animation: bar-grow var(--dur-slow) var(--ease-out-expo) both;
+  }
+  .animate-gauge-fill {
+    transition: width var(--dur-slow) var(--ease-out-expo);
+  }
+
+  /* ---- Ambient / decorative ---- */
+  .animate-shimmer {
+    background-size: 200% 100%;
+    animation: shimmer 2.8s linear infinite;
+  }
+  .animate-pulse-soft {
+    animation: pulse-soft 2.4s var(--ease-in-out) infinite;
+  }
+  .animate-spin-slow {
+    animation: spin 14s linear infinite;
+  }
+
+  /* ---- Reduced motion: collapse choreography ---- */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .stagger-1,
+    .stagger-2,
+    .stagger-3,
+    .stagger-4,
+    .stagger-5,
+    .stagger-6,
+    .stagger-7,
+    .stagger-8 {
+      animation-delay: 0ms !important;
+    }
+    .chart-draw,
+    .bar-grow {
+      animation: none !important;
+      stroke-dashoffset: 0;
+    }
+  }
+}

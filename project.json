@@ -1,0 +1,19 @@
+{
+  "overview": "A biotech demo that predicts promoter expression strength from 35bp DNA sequences using an in-browser machine-learning model.",
+  "features": [
+    "Predict promoter strength from a DNA sequence",
+    "Compare two promoter candidates side by side",
+    "Run batch and FASTA predictions",
+    "View prediction history with CSV export",
+    "Explore model performance and real-data validation",
+    "Inspect predictive DNA motifs"
+  ],
+  "category": "tool",
+  "tags": [
+    "biotech",
+    "synthetic-biology",
+    "machine-learning",
+    "demo"
+  ],
+  "last_updated": "2026-09-07T18:56:06.458Z"
+}
