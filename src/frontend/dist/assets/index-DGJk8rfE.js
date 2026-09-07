@@ -42093,6 +42093,7 @@ function solveLinearSystem(A, b2) {
 class PromoterModel {
   constructor() {
     __publicField(this, "weights", null);
+    __publicField(this, "bias", 0);
     __publicField(this, "featureMean", null);
     __publicField(this, "featureStd", null);
     __publicField(this, "performance", null);
@@ -42132,12 +42133,14 @@ class PromoterModel {
     );
     const y2 = trainExamples.map((ex) => ex.label);
     const weights = ridgeRegression(X2, y2, RIDGE_LAMBDA);
+    const bias = mean$1(y2);
     const testPoints = testExamples.map((ex) => {
       const predicted2 = this.predictFromFeatures(
         ex.features,
         featureMean,
         featureStd,
-        weights
+        weights,
+        bias
       );
       return { actual: ex.label, predicted: predicted2 };
     });
@@ -42152,6 +42155,7 @@ class PromoterModel {
     const r2 = ssTot === 0 ? 0 : 1 - ssRes / ssTot;
     const rmse = Math.sqrt(ssRes / testPoints.length);
     this.weights = weights;
+    this.bias = bias;
     this.featureMean = featureMean;
     this.featureStd = featureStd;
     this.performance = {
@@ -42162,8 +42166,8 @@ class PromoterModel {
       testPoints
     };
   }
-  predictFromFeatures(features, featureMean, featureStd, weights) {
-    let score = 0;
+  predictFromFeatures(features, featureMean, featureStd, weights, bias) {
+    let score = bias;
     for (let j2 = 0; j2 < weights.length; j2 += 1) {
       const standardized = (features[j2] - featureMean[j2]) / featureStd[j2];
       score += standardized * weights[j2];
@@ -42178,7 +42182,8 @@ class PromoterModel {
       features,
       this.featureMean,
       this.featureStd,
-      this.weights
+      this.weights,
+      this.bias
     );
   }
   /** Return the model's performance metrics on the held-out test set. */

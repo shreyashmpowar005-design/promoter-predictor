@@ -191,6 +191,7 @@ function solveLinearSystem(A: number[][], b: number[]): number[] {
 /** A trained demo model instance. */
 export class PromoterModel {
   private weights: number[] | null = null;
+  private bias = 0;
   private featureMean: number[] | null = null;
   private featureStd: number[] | null = null;
   private performance: ModelPerformance | null = null;
@@ -240,6 +241,12 @@ export class PromoterModel {
 
     const weights = ridgeRegression(X, y, RIDGE_LAMBDA);
 
+    // Intercept/bias term. Because features are z-score standardized (zero
+    // mean), the least-squares intercept equals the mean of the training
+    // labels. Without it, raw scores would be centered near 0 while the
+    // training labels average ~0.5-0.7, so predictions would clamp to 0%.
+    const bias = mean(y);
+
     // Evaluate on the held-out test set.
     const testPoints = testExamples.map((ex) => {
       const predicted = this.predictFromFeatures(
@@ -247,6 +254,7 @@ export class PromoterModel {
         featureMean,
         featureStd,
         weights,
+        bias,
       );
       return { actual: ex.label, predicted };
     });
@@ -263,6 +271,7 @@ export class PromoterModel {
     const rmse = Math.sqrt(ssRes / testPoints.length);
 
     this.weights = weights;
+    this.bias = bias;
     this.featureMean = featureMean;
     this.featureStd = featureStd;
     this.performance = {
@@ -279,8 +288,9 @@ export class PromoterModel {
     featureMean: number[],
     featureStd: number[],
     weights: number[],
+    bias: number,
   ): number {
-    let score = 0;
+    let score = bias;
     for (let j = 0; j < weights.length; j += 1) {
       const standardized = (features[j] - featureMean[j]) / featureStd[j];
       score += standardized * weights[j];
@@ -297,6 +307,7 @@ export class PromoterModel {
       this.featureMean!,
       this.featureStd!,
       this.weights!,
+      this.bias,
     );
   }
 

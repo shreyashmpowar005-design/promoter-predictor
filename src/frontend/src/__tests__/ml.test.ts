@@ -15,6 +15,14 @@ describe("promoterModel", () => {
     expect(Number.isFinite(score)).toBe(true);
   });
 
+  it("predicts a non-zero score for a valid sequence", () => {
+    // The bias/intercept fix centers raw scores around the training-label mean
+    // (~0.5-0.7) instead of near 0, so a valid sequence must not collapse to a
+    // zero prediction that would clamp to 0% on the display layer.
+    const score = promoterModel.predict(VALID_35BP);
+    expect(score).not.toBe(0);
+  });
+
   it("predicts deterministically for the same sequence", () => {
     const a = promoterModel.predict(VALID_35BP);
     const b = promoterModel.predict(VALID_35BP);

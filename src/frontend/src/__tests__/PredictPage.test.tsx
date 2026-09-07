@@ -1,12 +1,28 @@
 import PredictPage from "@/pages/PredictPage";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const { mockUseReducedMotion } = vi.hoisted(() => ({
+  mockUseReducedMotion: vi.fn(),
+}));
+
+// Force reduced motion so the count-up percentage jumps straight to its target
+// and the result-card entrance mounts immediately. This makes the displayed
+// percentage and strength label deterministic instead of mid-animation.
+vi.mock("motion/react", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("motion/react")>();
+  return {
+    ...actual,
+    useReducedMotion: () => mockUseReducedMotion(),
+  };
+});
 
 const VALID_35BP = "TTGACGGCTAGCTCAGTCCTAGGTACAGTGCTAGC";
 
 describe("PredictPage", () => {
   beforeEach(() => {
+    mockUseReducedMotion.mockReturnValue(true);
     window.localStorage.clear();
   });
 
@@ -30,6 +46,33 @@ describe("PredictPage", () => {
     expect(screen.getByText(/GC content/i)).toBeInTheDocument();
     // Motifs detected section appears.
     expect(screen.getByText(/Motifs detected/i)).toBeInTheDocument();
+  });
+
+  it("shows a non-zero percentage and a strength label for a valid sequence", async () => {
+    const user = userEvent.setup();
+    render(<PredictPage />);
+
+    const input = screen.getByTestId("sequence.input");
+    await user.clear(input);
+    await user.type(input, VALID_35BP);
+
+    await user.click(screen.getByTestId("predict_button"));
+
+    // The bias/intercept fix centers raw scores around the training-label mean
+    // (~0.5-0.7) instead of near 0, so the normalized percentage must be
+    // non-zero rather than clamping to 0%. The result card's headline
+    // percentage is the integer `<p>` (e.g. "42%"), distinct from the gauge
+    // label ("Moderate · 42%") and the GC-content figure ("54.3%").
+    const resultCard = await screen.findByTestId("result_card");
+    const percent = within(resultCard).getByText(/^\d+%$/);
+    const value = Number.parseInt(percent.textContent ?? "", 10);
+    expect(Number.isNaN(value)).toBe(false);
+    expect(value).toBeGreaterThan(0);
+
+    // A strength label (Weak, Moderate, or Strong) reflects the percentage.
+    expect(
+      within(resultCard).getByText(/(Weak|Moderate|Strong) ·/),
+    ).toBeInTheDocument();
   });
 
   it("auto-uppercases lowercase input via the sequence input", async () => {
